@@ -13,6 +13,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    restart: always
   backend:
     image: bushmlen/taski_backend
     env_file: .env
@@ -21,12 +22,14 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    restart: always
   frontend:
     image: bushmlen/taski_frontend
     env_file: .env
     command: cp -r /app/build/. /frontend_static/
     volumes:
       - static_volume:/frontend_static
+    restart: always
   gateway:
     image: bushmlen/taski_gateway
     env_file: .env
@@ -37,3 +40,4 @@ services:
     depends_on:
       backend:
         condition: service_started
+    restart: always
